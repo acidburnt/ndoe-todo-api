@@ -1,17 +1,31 @@
 const mongoose = require( 'mongoose' );
 
-mongoose.Promise = global.Promise;
 mongoose.connect( 'mongodb://localhost/TodoApp' );
+mongoose.Promise = global.Promise;
 
 const Todo = mongoose.model( 'Todo', {
 	text: {
-		type: String
+		type: String,
+		required: true,
+		minlength: 1,
+		trim: true
 	},
 	completed: {
-		type: Boolean
+		type: Boolean,
+		default: false
 	},
 	completedAt: {
-		type: Number
+		type: Number,
+		default: null
+	}
+} );
+
+const User = mongoose.model( 'User', {
+	email: {
+		type: String,
+		required: true,
+		trim: true,
+		minlength: 1
 	}
 } );
 
@@ -19,10 +33,8 @@ const newTodo = new Todo( {
 	text: 'Cook dinner'
 } );
 
-const nextTodo = new Todo( {
-	text: 'Do dishes',
-	completed: false,
-	completedAt: 34
+const newUser = new User( {
+	email: 'locky700@gmail.com'
 } );
 
 // newTodo.save().then( doc => {
@@ -30,8 +42,8 @@ const nextTodo = new Todo( {
 // }, e => {
 // 	console.log( e );
 // } );
-nextTodo.save().then( doc => {
-	console.log( 'Saved todo', doc );
+newUser.save().then( doc => {
+	console.log( 'Saved: ', doc );
 }, e => {
 	console.log( e );
 } );
